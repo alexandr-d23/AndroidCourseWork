@@ -59,7 +59,11 @@ class HistoryFragment : Fragment() {
                 adapter.submitList(it.toMutableList())
                 Log.d("MYTAG", it.toString())
             }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
