@@ -19,15 +19,12 @@ interface UsersDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addSprints(list: List<Sprint>) : Completable
 
-    @Transaction
     @Query("SELECT * FROM user")
     fun getUsers(): Flowable<List<User>>
 
-    @Transaction
     @Query("SELECT * FROM Sprint")
     fun getSprints(): Flowable<List<Sprint>>
 
-    @Transaction
     @Query("SELECT * FROM user")
     fun getUsersWithSprints():Flowable<List<UserWithSprints>>
 }
