@@ -4,14 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.runningapp.data.room.entities.*
 
 @Database(
     entities = [
-
+        User::class,
+        Sprint::class
     ],
     version = 1,
     exportSchema = false
 )
+@TypeConverters(DateTimeConverter::class)
 abstract class RunDatabase : RoomDatabase() {
     abstract val usersDAO: UsersDAO
 
