@@ -1,11 +1,13 @@
-package com.example.runningapp.domain.usecases.repositories
+package com.example.runningapp.domain.repositories
 
-import com.example.runningapp.data.room.entities.User
+import androidx.lifecycle.LiveData
+import com.example.runningapp.domain.model.User
 
 interface AuthRepository {
     suspend fun updateUsername(name: String)
     suspend fun signUp(user: User): User?
     suspend fun signIn(user: User): User?
-    suspend fun getCurrentUser(): User?
+    fun getCurrentUser(): User?
     suspend fun signOut()
+    fun isUserAuthenticated(): LiveData<Boolean>
 }

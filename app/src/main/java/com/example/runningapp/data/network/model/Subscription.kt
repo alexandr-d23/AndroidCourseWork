@@ -1,4 +1,6 @@
 package com.example.runningapp.data.network.model
 
-class Subscription {
-}
+data class Subscription(
+    val subscriberId: String = "",
+    val userId: String = ""
+)

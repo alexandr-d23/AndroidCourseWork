@@ -3,7 +3,7 @@ package com.example.runningapp.data.room
 import androidx.room.TypeConverter
 import org.joda.time.DateTime
 
-class DateTimeConverter {
+class Converters {
 
     @TypeConverter
     fun fromDateTime(dateTime: DateTime): Long = dateTime.millis

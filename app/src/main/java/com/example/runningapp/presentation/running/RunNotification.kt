@@ -1,4 +1,4 @@
-package com.example.runningapp.presentation.notifications
+package com.example.runningapp.presentation.running
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -9,7 +9,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.runningapp.R
-import com.example.runningapp.presentation.ui.MainActivity
+import com.example.runningapp.presentation.common.RunActivity
 import com.example.runningapp.utils.Constants
 
 class RunNotification(
@@ -20,7 +20,7 @@ class RunNotification(
 
     init {
         createNotificationChannel()
-        val intent = Intent(context, MainActivity::class.java)
+        val intent = Intent(context, RunActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         notification = NotificationCompat.Builder(context, Constants.CHANNEL_ID)

@@ -1,25 +1,35 @@
 package com.example.runningapp.data.repositories
 
 import android.util.Log
-import com.example.runningapp.data.room.entities.User
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.runningapp.data.mappers.userToUserRemote
+import com.example.runningapp.domain.model.User
+import com.example.runningapp.domain.repositories.AuthRepository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
-class FirebaseUserRepository(
+class FirebaseAuthRepository(
     private val auth: FirebaseAuth
-) : UserRepository {
+) : AuthRepository {
+
+    private val isAuthenticated: MutableLiveData<Boolean> = MutableLiveData(auth.currentUser != null)
+
+    init {
+        observeAuthStateListener()
+    }
+
     override suspend fun updateUsername(name: String) {
         updateUserName(name)
     }
 
     override suspend fun signUp(user: User): User? {
-        Log.d("MYTAG", "FirebaseUserRepository signUp(): ${user}")
-        val task = auth.createUserWithEmailAndPassword(user.email, user.password)
-        task.addOnCompleteListener {
+        Log.d("MYTAG", "FirebaseAuth    Repository signUp(): ${user}")
+        auth.createUserWithEmailAndPassword(user.email, user.password).addOnCompleteListener {
+
         }.await()
         updateUserName(user.name)?.await()
         return auth.currentUser?.let {
@@ -27,7 +37,14 @@ class FirebaseUserRepository(
         }
     }
 
-    private fun updateUserName(name: String): Task<Void>? {
+
+    private fun observeAuthStateListener(){
+        auth.addAuthStateListener {
+            isAuthenticated.postValue(auth.currentUser != null)
+        }
+    }
+
+    private fun updateUserName(name: String?): Task<Void>? {
         val updates = UserProfileChangeRequest.Builder()
             .setDisplayName(name)
             .build()
@@ -35,8 +52,7 @@ class FirebaseUserRepository(
     }
 
     override suspend fun signIn(user: User): User? {
-        val task = auth.signInWithEmailAndPassword(user.email, user.password)
-        task.addOnCompleteListener {
+        auth.signInWithEmailAndPassword(user.email, user.password).addOnCompleteListener {
 
         }.await()
         return auth.currentUser?.let {
@@ -44,22 +60,22 @@ class FirebaseUserRepository(
         }
     }
 
-    override suspend fun getCurrentUser(): User? = auth.currentUser?.let {
+    override fun getCurrentUser(): User? = auth.currentUser?.let {
         getUserFromFirebaseUser(it)
     }
 
-    private fun getUserFromFirebaseUser(firebaseUser: FirebaseUser): User {
-        val user = firebaseUser.let {
+    private fun getUserFromFirebaseUser(firebaseUser: FirebaseUser): User =
+        with(firebaseUser) {
             User(
-                email = it.email ?: "",
-                name = it.displayName ?: "",
-                id = it.uid
+                id = uid,
+                email = email,
+                name = displayName
             )
         }
-        return user
-    }
 
     override suspend fun signOut() {
         auth.signOut()
     }
+
+    override fun isUserAuthenticated(): LiveData<Boolean> = isAuthenticated
 }

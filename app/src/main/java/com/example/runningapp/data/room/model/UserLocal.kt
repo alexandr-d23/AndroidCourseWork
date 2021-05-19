@@ -4,9 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class User(
+data class UserLocal(
     @PrimaryKey
     var id: String = "",
     var email: String = "Mock email",
-    var name: String? = "Mock name"
+    var name: String? = "Mock name",
+    var isSubscribed: Boolean
 )

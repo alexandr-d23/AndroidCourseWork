@@ -1,4 +1,4 @@
-package com.example.runningapp.presentation.authentication
+package com.example.runningapp.presentation.signup
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.runningapp.ApplicationDelegate
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentSignUpBinding
 import com.example.runningapp.presentation.common.ViewModelFactory
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class SignUpFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -24,6 +23,7 @@ class SignUpFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ApplicationDelegate.component.inject(this)
         super.onCreate(savedInstanceState)
         userViewModel = ViewModelProvider(
             viewModelStore,
@@ -50,18 +50,9 @@ class SignUpFragment : Fragment() {
     }
 
     private fun initLiveDataListeners() {
-        userViewModel.getCurrentUser().observe(viewLifecycleOwner) {
-            it?.let {
-                navigateToProfile()
-            }
-        }
         userViewModel.getSignUpErrorLiveData().observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun navigateToProfile() {
-        findNavController().navigate(R.id.action_signUpFragment_to_profileFragment2)
     }
 
     override fun onCreateView(

@@ -1,11 +1,16 @@
-package com.example.runningapp.domain.usecases.repositories
+package com.example.runningapp.domain.repositories
 
-import com.example.runningapp.data.room.entities.User
+import androidx.lifecycle.LiveData
+import com.example.runningapp.data.network.model.Subscription
+import com.example.runningapp.data.room.relations.UserWithSprints
+import com.example.runningapp.domain.model.User
 
 interface UserRepository {
-    suspend fun getUsers(): List<User>
+    fun getUsers(userId: String): LiveData<List<User>>
+    fun getUserById(userId: String): LiveData<User>
     suspend fun addUser(user: User)
     suspend fun updateUser(user: User)
-    suspend fun subscribe(subscriberId: String, subscribedId: String)
-    suspend fun unsubscribe(subscriberId: String, subscribedId: String)
+    suspend fun subscribe(subscription: Subscription)
+    suspend fun unsubscribe(subscription: Subscription)
+    suspend fun refreshUsers(userId: String)
 }

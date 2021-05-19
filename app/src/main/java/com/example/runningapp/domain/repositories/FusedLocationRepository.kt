@@ -1,6 +1,5 @@
-package com.example.runningapp.domain.usecases.repositories
+package com.example.runningapp.domain.repositories
 
-import android.location.Location
 import android.os.Looper
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest

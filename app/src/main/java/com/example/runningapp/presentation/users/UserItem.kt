@@ -1,4 +1,7 @@
 package com.example.runningapp.presentation.users
 
-class UserItem {
-}
+data class UserItem(
+    val id: String,
+    val name: String,
+    val isSubscribed: Boolean
+)

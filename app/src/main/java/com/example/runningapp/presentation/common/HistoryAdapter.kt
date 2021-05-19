@@ -1,4 +1,4 @@
-package com.example.runningapp.presentation.history
+package com.example.runningapp.presentation.common
 
 import android.util.Log
 import android.view.LayoutInflater

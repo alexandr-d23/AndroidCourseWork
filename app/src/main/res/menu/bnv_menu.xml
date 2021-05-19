@@ -2,16 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_run"
-        android:icon="@drawable/ic_launcher_background"
+        android:id="@+id/runFragment"
+        android:icon="@drawable/ic_baseline_run_24"
         android:title="@string/run" />
-    <item
-        android:id="@+id/item_history"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="@string/history" />
 
     <item
-        android:id="@+id/item_profile"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="Profile" />
+        android:id="@+id/usersFragment"
+        android:icon="@drawable/ic_baseline_users_24"
+        android:title="@string/users"/>
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile_24"
+        android:title="@string/profile" />
+
 </menu>

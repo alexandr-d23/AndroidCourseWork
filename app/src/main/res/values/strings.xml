@@ -1,5 +1,26 @@
 <resources>
     <string name="app_name">RunningApp</string>
     <string name="run">Run</string>
-    <string name="history">history</string>
+    <string name="history">History</string>
+    <string name="profile">Profile</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_out">Sign out</string>
+    <string name="sign_in_to_continue">Для продолжения необходимо войти</string>
+    <string name="name">Name</string>
+    <string name="update">update</string>
+    <string name="users">Users</string>
+    <string name="statistics">Statistics</string>
+    <string name="permission_text">Application needs location permission to continue</string>
+    <string name="start">Start</string>
+    <string name="subscribe">subscribe</string>
+    <string name="stop">stop</string>
+    <string name="unsubscribe">unsubscribe</string>
+    <string name="back">back</string>
+    <string-array name="spinner_items">
+        <item>All users</item>
+        <item>You are subscribed</item>
+    </string-array>
 </resources>

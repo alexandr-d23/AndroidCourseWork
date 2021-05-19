@@ -1,9 +1,8 @@
-package com.example.runningapp.domain.usecases.repositories
+package com.example.runningapp.domain.repositories
 
-import androidx.lifecycle.LiveData
-import com.example.runningapp.data.room.entities.Sprint
+import com.example.runningapp.domain.model.Sprint
 
 interface SprintRepository {
-    suspend fun saveSprint(userId: String, sprint: Sprint)
-    suspend fun getSprints(userId: String): LiveData<List<Sprint>>
+    suspend fun saveSprint(sprint: Sprint)
+    suspend fun getSprints(userId: String): List<Sprint>
 }

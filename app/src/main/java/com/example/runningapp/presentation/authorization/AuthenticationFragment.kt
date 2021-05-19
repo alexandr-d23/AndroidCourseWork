@@ -1,5 +1,6 @@
-package com.example.runningapp.presentation.common
+package com.example.runningapp.presentation.authorization
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentAuthenticationBinding
+import com.example.runningapp.presentation.common.RunActivity
 
 class AuthenticationFragment : Fragment() {
 
@@ -43,6 +45,4 @@ class AuthenticationFragment : Fragment() {
             }
         }
     }
-
-
 }

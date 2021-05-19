@@ -5,19 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.runningapp.data.room.entities.*
+import com.example.runningapp.data.room.daos.UsersDAO
+import com.example.runningapp.data.room.model.*
 
 @Database(
     entities = [
-        User::class,
-        Sprint::class
+        UserLocal::class,
+        SprintLocal::class
     ],
     version = 1,
     exportSchema = false
 )
-@TypeConverters(DateTimeConverter::class)
+@TypeConverters(Converters::class)
 abstract class RunDatabase : RoomDatabase() {
     abstract val usersDAO: UsersDAO
+
 
     companion object {
         @Volatile

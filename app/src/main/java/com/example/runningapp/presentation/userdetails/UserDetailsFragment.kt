@@ -1,28 +1,27 @@
-package com.example.runningapp.presentation.profile
+package com.example.runningapp.presentation.userdetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.runningapp.ApplicationDelegate
 import com.example.runningapp.databinding.FragmentProfileBinding
+import com.example.runningapp.databinding.FragmentUserDetailsBinding
 import com.example.runningapp.domain.model.User
 import com.example.runningapp.presentation.common.HistoryAdapter
 import com.example.runningapp.presentation.common.ViewModelFactory
 import javax.inject.Inject
 
-class ProfileFragment : Fragment() {
-
+class UserDetailsFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var userViewModel: ProfileViewModel
+    private lateinit var userViewModel: UserDetailsViewModel
 
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentUserDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: HistoryAdapter
 
@@ -32,7 +31,7 @@ class ProfileFragment : Fragment() {
         userViewModel = ViewModelProvider(
             viewModelStore,
             viewModelFactory
-        ).get(ProfileViewModel::class.java)
+        ).get(UserDetailsViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -40,7 +39,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentUserDetailsBinding.inflate(layoutInflater, container, false)
         initializeRecycler()
         return binding.root
     }
@@ -66,29 +65,20 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initListeners() {
-        with(binding) {
-            btnSignOut.setOnClickListener {
-                userViewModel.signOut()
-            }
-            btnUpdate.setOnClickListener {
-                userViewModel.updateName(binding.etName.text.toString())
-            }
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
     private fun initLiveDataListeners() {
-        userViewModel.getCurrentUser().observe(viewLifecycleOwner) {
-            it?.let {
-                bindUser(it)
+        arguments?.let {
+            val id = UserDetailsFragmentArgs.fromBundle(it).userId
+            userViewModel.getUserById(id).observe(viewLifecycleOwner) { user ->
+                bindUser(user)
+                adapter.submitList(user.sprints)
             }
-        }
-        userViewModel.getSprints().observe(viewLifecycleOwner) {
-            Log.d("MYTAG", "HistoryFragment initLiveDataListeners ${it.size}")
-            adapter.submitList(it)
-        }
-        userViewModel.getError().observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-            Log.d("MYTAG", "HistoryFragment: initLiveDataListeners: HISTORY ERROR ${it.message}")
+        } ?: run {
+            throw IllegalStateException("user id not found")
         }
     }
 
@@ -103,6 +93,4 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

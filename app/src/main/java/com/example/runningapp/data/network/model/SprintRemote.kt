@@ -1,4 +1,11 @@
 package com.example.runningapp.data.network.model
 
-class SprintRemote {
-}
+import org.joda.time.DateTime
+
+data class SprintRemote(
+    var userId: String = "",
+    var secondsRun: Long = 0,
+    var dateTime: Long = 0,
+    var avgSpeedKilometerPerHour: Double = 0.0,
+    var distance: Long = 0
+)

@@ -1,6 +1,5 @@
 package com.example.runningapp.data.room.model
 
-import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -14,12 +13,12 @@ import org.joda.time.DateTime
     )
     ]
 )
-data class Sprint(
-    @PrimaryKey(autoGenerate = true)
-    var id: String? = null,
+data class SprintLocal(
+    @PrimaryKey
+    var id: String = "",
     var userId: String = "",
-    var secondsRun: Int = 0,
+    var secondsRun: Long = 0,
     var dateTime: DateTime = DateTime(),
     var avgSpeed: Double = 0.0,
-    var distance: Int = 0
+    var distance: Long = 0
 )
