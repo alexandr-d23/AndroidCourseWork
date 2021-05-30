@@ -9,9 +9,10 @@ import com.example.runningapp.domain.model.User
 import com.example.runningapp.domain.usecases.RunUseCase
 import com.example.runningapp.domain.usecases.UserUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class ProfileViewModel(
+class ProfileViewModel @Inject constructor(
     private val userUseCase: UserUseCase,
     private val runUseCase: RunUseCase,
     private val coroutineContext: CoroutineContext
@@ -22,24 +23,10 @@ class ProfileViewModel(
     private val sprints: MutableLiveData<List<Sprint>> = MutableLiveData()
     private val sprintsError: MutableLiveData<Throwable> = MutableLiveData()
 
-    init {
-        refreshSprints()
-    }
-
-    fun getSprints(): LiveData<List<Sprint>> = sprints
+    suspend fun getSprints(): LiveData<List<Sprint>> = runUseCase.getAuthSprints()
 
     fun getError(): LiveData<Throwable> = sprintsError
 
-
-    fun refreshSprints(){
-        viewModelScope.launch(coroutineContext){
-            try{
-                sprints.postValue(runUseCase.getAuthSprints())
-            }catch (e: Exception){
-                sprintsError.postValue(e)
-            }
-        }
-    }
 
     fun signOut() {
         viewModelScope.launch(coroutineContext) {

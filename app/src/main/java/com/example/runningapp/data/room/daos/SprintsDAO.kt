@@ -11,7 +11,7 @@ import com.example.runningapp.data.room.model.SprintLocal
 interface SprintsDAO {
 
     @Query("SELECT * FROM SprintLocal where userId = :userId")
-    suspend fun getSprintsByUserId(userId: String): LiveData<List<SprintLocal>>
+    fun getSprintsByUserId(userId: String): LiveData<List<SprintLocal>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSprint(sprint: SprintLocal)

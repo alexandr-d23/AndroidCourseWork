@@ -4,6 +4,7 @@ import com.example.runningapp.data.network.api.FirebaseApi
 import com.example.runningapp.data.repositories.FirebaseSprintRepository
 import com.example.runningapp.data.repositories.FirebaseUserRepository
 import com.example.runningapp.data.repositories.FusedLocationRepositoryImpl
+import com.example.runningapp.data.room.daos.SprintsDAO
 import com.example.runningapp.data.room.daos.UsersDAO
 import com.example.runningapp.domain.repositories.AuthRepository
 import com.example.runningapp.domain.repositories.FusedLocationRepository
@@ -36,6 +37,6 @@ class RepoModule {
 
     @Singleton
     @Provides
-    fun provideSprintRepository(firebaseFirestore: FirebaseFirestore): SprintRepository =
-        FirebaseSprintRepository(firebaseFirestore)
+    fun provideSprintRepository(firebaseApi: FirebaseApi, sprintsDAO: SprintsDAO): SprintRepository =
+        FirebaseSprintRepository(firebaseApi, sprintsDAO)
 }

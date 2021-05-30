@@ -7,7 +7,7 @@ import com.example.runningapp.domain.model.User
 
 interface UserRepository {
     fun getUsers(userId: String): LiveData<List<User>>
-    fun getUserById(userId: String): LiveData<User>
+    fun getUserById(userId: String): LiveData<User?>
     suspend fun addUser(user: User)
     suspend fun updateUser(user: User)
     suspend fun subscribe(subscription: Subscription)

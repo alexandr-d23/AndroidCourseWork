@@ -4,9 +4,10 @@ import androidx.lifecycle.*
 import com.example.runningapp.domain.model.User
 import com.example.runningapp.domain.usecases.UserUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class UsersViewModel(
+class UsersViewModel  @Inject constructor(
     private val userUseCase: UserUseCase,
     private val coroutineContext: CoroutineContext
 ) : ViewModel() {

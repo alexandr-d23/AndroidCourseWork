@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.runningapp.di.modules.*
 import com.example.runningapp.presentation.authorization.AuthActivity
 import com.example.runningapp.presentation.common.RunActivity
+import com.example.runningapp.presentation.di.ScreenComponent
 import com.example.runningapp.presentation.profile.ProfileFragment
 import com.example.runningapp.presentation.running.RunFragment
 import com.example.runningapp.presentation.running.RunService
@@ -28,23 +29,8 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
 
-    fun inject(activity: RunActivity)
+    fun getScreenComponent(): ScreenComponent.Factory
 
-    fun inject(activity: AuthActivity)
-
-    fun inject(runFragment: RunFragment)
-
-    fun inject(runService: RunService)
-
-    fun inject(signInFragment: SignInFragment)
-
-    fun inject(singUpFragment: SignUpFragment)
-
-    fun inject(usersFragment: UsersFragment)
-
-    fun inject(profileFragment: ProfileFragment)
-
-    fun inject(userDetailsFragment: UserDetailsFragment)
 
     @Component.Builder
     interface Builder {

@@ -26,6 +26,17 @@ fun sprintRemoteToSprint(sprint: SprintRemote): Sprint {
     )
 }
 
+fun sprintRemoteToSprintLocal(sprint: SprintRemote): SprintLocal {
+    return SprintLocal(
+        id = sprint.docId,
+        userId = sprint.userId!!,
+        distance = sprint.distance,
+        dateTime = DateTime(sprint.dateTime),
+        secondsRun = sprint.secondsRun,
+        avgSpeed = sprint.avgSpeedKilometerPerHour
+    )
+}
+
 fun sprintLocalToSprint(sprintLocal: SprintLocal): Sprint =
     Sprint(
         userId = sprintLocal.userId,

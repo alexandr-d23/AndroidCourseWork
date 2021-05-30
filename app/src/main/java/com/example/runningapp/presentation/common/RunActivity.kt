@@ -16,24 +16,15 @@ import javax.inject.Inject
 class RunActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
     lateinit var viewModel: AuthorizationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ApplicationDelegate.component.inject(this)
-        findNavController(R.id.hostFragment).addOnDestinationChangedListener { _, destination, _->
-            when(destination.id){
-
-            }
-        }
-        viewModel = ViewModelProvider(
-            viewModelStore,
-            viewModelFactory
-        ).get(AuthorizationViewModel::class.java)
+        ApplicationDelegate.getScreenComponent().inject(this)
         initLiveDataListeners()
     }
 

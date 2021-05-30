@@ -6,20 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.runningapp.ApplicationDelegate
-import com.example.runningapp.databinding.FragmentProfileBinding
 import com.example.runningapp.databinding.FragmentUserDetailsBinding
 import com.example.runningapp.domain.model.User
 import com.example.runningapp.presentation.common.HistoryAdapter
-import com.example.runningapp.presentation.common.ViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserDetailsFragment : Fragment() {
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var userViewModel: UserDetailsViewModel
+    lateinit var userViewModel: UserDetailsViewModel
 
     private var _binding: FragmentUserDetailsBinding? = null
     private val binding get() = _binding!!
@@ -27,11 +29,7 @@ class UserDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ApplicationDelegate.component.inject(this)
-        userViewModel = ViewModelProvider(
-            viewModelStore,
-            viewModelFactory
-        ).get(UserDetailsViewModel::class.java)
+        ApplicationDelegate.getScreenComponent().inject(this)
     }
 
     override fun onCreateView(
@@ -71,11 +69,21 @@ class UserDetailsFragment : Fragment() {
     }
 
     private fun initLiveDataListeners() {
-        arguments?.let {
-            val id = UserDetailsFragmentArgs.fromBundle(it).userId
+        arguments?.let { bundle ->
+            val id = UserDetailsFragmentArgs.fromBundle(bundle).userId
             userViewModel.getUserById(id).observe(viewLifecycleOwner) { user ->
-                bindUser(user)
-                adapter.submitList(user.sprints)
+                user?.let {
+                    bindUser(user)
+                    adapter.submitList(user.sprints)
+                }
+            }
+            lifecycleScope.launch(Dispatchers.IO){
+                val sprints = userViewModel.getSprints(id)
+                withContext(Dispatchers.Main){
+                    sprints.observe(viewLifecycleOwner){
+                        adapter.submitList(it)
+                    }
+                }
             }
         } ?: run {
             throw IllegalStateException("user id not found")
@@ -84,8 +92,8 @@ class UserDetailsFragment : Fragment() {
 
     private fun bindUser(user: User) {
         with(binding) {
-            etEmail.setText(user.email)
-            etName.setText(user.name)
+            etEmail.text = user.email
+            etName.text = user.name
         }
     }
 

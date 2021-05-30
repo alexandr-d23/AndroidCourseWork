@@ -18,15 +18,17 @@ class FirebaseUserRepository(
 
 
     override fun getUsers(userId: String): LiveData<List<User>> {
-        Log.d("MYTAG", "FirebaseUserRepository getUsers()")
         return usersDAO.getUsersWithSprints().map {
             it.map(::userWithSprintsToUser)
         }
     }
 
-    override fun getUserById(userId: String): LiveData<User> = usersDAO.getUserWithSprintsById(userId).map {
-        userWithSprintsToUser(it)
-    }
+    override fun getUserById(userId: String): LiveData<User?> =
+        usersDAO.getUserWithSprintsById(userId).map {
+            it?.let {  user ->
+                userWithSprintsToUser(user)
+            }
+        }
 
     override suspend fun addUser(user: User) {
         firebaseApi.addUser(user)
@@ -61,6 +63,7 @@ class FirebaseUserRepository(
                 userRemoteToUserlocal(it, isSubscribed)
             })
         }
+
     }
 
 }

@@ -1,7 +1,9 @@
 package com.example.runningapp.data.network.api
 
+import com.example.runningapp.data.network.model.SprintRemote
 import com.example.runningapp.data.network.model.Subscription
 import com.example.runningapp.data.network.model.UserRemote
+import com.example.runningapp.domain.model.Sprint
 import com.example.runningapp.domain.model.User
 
 interface FirebaseApi {
@@ -11,4 +13,6 @@ interface FirebaseApi {
     suspend fun subscribe(subscription: Subscription)
     suspend fun unsubscribe(subscription: Subscription)
     suspend fun getUsers(): List<UserRemote>
+    suspend fun saveSprint(sprint: Sprint)
+    suspend fun getSprints(userId: String): List<SprintRemote>
 }

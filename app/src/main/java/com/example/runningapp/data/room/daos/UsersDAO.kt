@@ -26,5 +26,5 @@ interface UsersDAO {
     fun getUsersWithSprints(): LiveData<List<UserWithSprints>>
 
     @Query("SELECT * FROM userlocal WHERE id = :userId")
-    fun getUserWithSprintsById(userId: String): LiveData<UserWithSprints>
+    fun getUserWithSprintsById(userId: String): LiveData<UserWithSprints?>
 }

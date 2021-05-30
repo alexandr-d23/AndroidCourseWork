@@ -49,7 +49,6 @@ class RunService : LifecycleService() {
     lateinit var runUseCase: RunUseCase
 
     @Inject
-    @Named("IO")
     lateinit var coroutineContext: CoroutineContext
 
     @Inject
@@ -60,7 +59,7 @@ class RunService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-        ApplicationDelegate.component.inject(this)
+        ApplicationDelegate.getScreenComponent().inject(this)
         localBinder = LocalBinder()
         isTracking.observe(this) {
             updateLocationTracking(it)

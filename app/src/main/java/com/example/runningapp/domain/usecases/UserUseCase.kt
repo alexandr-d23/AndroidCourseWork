@@ -10,7 +10,7 @@ import com.example.runningapp.domain.repositories.UserRepository
 class UserUseCase(
     private val userRepository: UserRepository,
     private val authRepository: AuthRepository
-){
+) {
 
     suspend fun updateUsername(name: String) {
         authRepository.updateUsername(name)
@@ -32,9 +32,7 @@ class UserUseCase(
 
     suspend fun signIn(user: User): User? = authRepository.signIn(user)
 
-    fun getCurrentUser(): User? {
-        return authRepository.getCurrentUser()
-    }
+    fun getCurrentUser(): User? = authRepository.getCurrentUser()
 
     suspend fun signOut() = authRepository.signOut()
 
@@ -42,7 +40,7 @@ class UserUseCase(
         Log.d("MYTAG", "UserUseCaseImpl subscribe() : ${subscribedId}")
         userRepository.subscribe(
             Subscription(
-                getUserId(),
+                getCurrentUserId() ?: throw IllegalStateException("Not authorized"),
                 subscribedId
             )
         )
@@ -52,20 +50,23 @@ class UserUseCase(
         Log.d("MYTAG", "UserUseCaseImpl unsubscribe() : ${subscribedId}")
         userRepository.unsubscribe(
             Subscription(
-                getUserId(),
+                getCurrentUserId() ?: throw IllegalStateException("Not authorized"),
                 subscribedId
             )
         )
     }
 
-    fun getUserById(userId: String): LiveData<User> = userRepository.getUserById(userId)
+    fun getUserById(userId: String): LiveData<User?> = userRepository.getUserById(userId)
 
-    private fun getUserId(): String =
-        authRepository.getCurrentUser()?.id ?: throw IllegalStateException("Not authorized")
+    private fun getCurrentUserId(): String? =
+        authRepository.getCurrentUser()?.id
 
-    suspend fun refreshUsers() = userRepository.refreshUsers(getUserId())
+    suspend fun refreshUsers() = userRepository.refreshUsers(
+        getCurrentUserId() ?: throw IllegalStateException("Not authorized")
+    )
 
-    fun getAllUsers(): LiveData<List<User>> = userRepository.getUsers(getUserId())
+    fun getAllUsers(): LiveData<List<User>> =
+        userRepository.getUsers(getCurrentUserId() ?: throw IllegalStateException("Not authorized"))
 
     suspend fun addUser(user: User) = userRepository.addUser(user)
 

@@ -8,9 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.runningapp.domain.model.User
 import com.example.runningapp.domain.usecases.UserUseCase
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class SignUpViewModel(
+class SignUpViewModel @Inject constructor(
     private val userUseCase: UserUseCase,
     private val coroutineContext: CoroutineContext
 ) : ViewModel() {

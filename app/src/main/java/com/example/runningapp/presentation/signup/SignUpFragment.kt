@@ -7,28 +7,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.example.runningapp.ApplicationDelegate
-import com.example.runningapp.R
 import com.example.runningapp.databinding.FragmentSignUpBinding
-import com.example.runningapp.presentation.common.ViewModelFactory
 import javax.inject.Inject
 
 class SignUpFragment : Fragment() {
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var userViewModel: SignUpViewModel
+    lateinit var userViewModel: SignUpViewModel
 
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ApplicationDelegate.component.inject(this)
+        ApplicationDelegate.getScreenComponent().inject(this)
         super.onCreate(savedInstanceState)
-        userViewModel = ViewModelProvider(
-            viewModelStore,
-            viewModelFactory
-        ).get(SignUpViewModel::class.java)
+
     }
 
     override fun onStart() {

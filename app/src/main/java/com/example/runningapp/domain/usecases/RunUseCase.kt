@@ -1,6 +1,7 @@
 package com.example.runningapp.domain.usecases
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.runningapp.domain.model.Sprint
 import com.example.runningapp.domain.repositories.AuthRepository
 import com.example.runningapp.domain.repositories.SprintRepository
@@ -25,12 +26,15 @@ class RunUseCase(
         sprintRepository.saveSprint(sprint)
     }
 
-    suspend fun getAuthSprints(): List<Sprint> =
+    suspend fun getAuthSprints(): LiveData<List<Sprint>> =
         sprintRepository.getSprints(
             authRepository.getCurrentUser()?.id
                 ?: throw IllegalStateException("Not authorized")
-        ).also {
-            Log.d("MYTAG", "RunUseCase getAuthSprints() list size: ${it.size}")
-        }
+        )
+
+    suspend fun getSprints(userId: String): LiveData<List<Sprint>> =
+        sprintRepository.getSprints(
+            userId
+        )
 
 }

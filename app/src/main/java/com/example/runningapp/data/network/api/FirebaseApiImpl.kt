@@ -1,9 +1,13 @@
 package com.example.runningapp.data.network.api
 
 import android.util.Log
+import com.example.runningapp.data.mappers.sprintRemoteToSprint
+import com.example.runningapp.data.mappers.sprintToSprintRemote
 import com.example.runningapp.data.mappers.userToUserRemote
+import com.example.runningapp.data.network.model.SprintRemote
 import com.example.runningapp.data.network.model.Subscription
 import com.example.runningapp.data.network.model.UserRemote
+import com.example.runningapp.domain.model.Sprint
 import com.example.runningapp.domain.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -58,5 +62,18 @@ class FirebaseApiImpl(
                 ?: throw IllegalStateException("Incorrect deserializing")
         }
 
+    override suspend fun saveSprint(sprint: Sprint) {
+        val sprintRemote = sprintToSprintRemote(sprint)
+        Log.d("MYTAG", "FirebaseSpringRepository saveSprint(): $sprintRemote")
+        usersRef.document(sprintRemote.userId).collection("sprints").add(sprintRemote)
+    }
+
+    override suspend fun getSprints(userId: String): List<SprintRemote> {
+        return usersRef.document(userId).collection("sprints").get()
+            .await().documents.map { doc ->
+                doc.toObject(SprintRemote::class.java)
+                    ?: throw IllegalStateException("Unchecked cast")
+            }
+    }
 
 }

@@ -17,5 +17,7 @@ class ApplicationDelegate : Application() {
 
     companion object {
         lateinit var component: AppComponent
+
+        fun getScreenComponent() = component.getScreenComponent().create()
     }
 }

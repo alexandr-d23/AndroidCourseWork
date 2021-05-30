@@ -31,6 +31,5 @@ class AppModule {
 
     @Singleton()
     @Provides()
-    @Named("IO")
     fun provideCoroutineContext(): CoroutineContext = SupervisorJob() + Dispatchers.IO
 }
